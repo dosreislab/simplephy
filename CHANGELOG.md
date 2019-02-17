@@ -10,5 +10,5 @@ and we use [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 ### Added
 - Functions to calculate the JC69 likelihood and posterior in a two-species
 alignment, when d (the molecular distance) is the parameter to be estimated,
-and when t, r (the divergence time and molecular rate, with d = 2*r*t) are the
-parameters to be estimated. 
+and when t, r (the divergence time and molecular rate, with d = 2rt) are the
+parameters to be estimated.

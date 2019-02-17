@@ -13,5 +13,5 @@ install_github("dosreislab/simplephy")
 You can reproduce fig. 1 in dos Reis et al. (2016, Nat. Rev. Genet., 17: 71)
 
 ```
-example("jc69.2s")
+example("jc69.rt")
 ```
