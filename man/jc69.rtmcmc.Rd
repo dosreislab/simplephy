@@ -16,15 +16,15 @@ n <- 100
 r <- seq(from=0, to=6, len=n) * 1e-3
 t <- seq(from=0, to=50, len=n)
 rt <- expand.grid(t=t, r=r)
-shape.r <- 2; rate.r <- .5 * 1e3 # diffuse prior with mean 4e-3
-shape.t <- 16.2; rate.t <- .72   # informative prior with mean 22.5
+shape.r <- 2; rate.r <- .5 * 1e3 # diffuse prior with mean 4e-3 substitutions per My
+shape.t <- 16.2; rate.t <- .72   # informative prior age of root with mean 22.5 Ma
 # MLE of molecular distance, note d here is distance from tip to root
 d.mle <- jc69.2smle(humanorang$x, humanorang$n) / 2
 
 # Joint posterior on r and t:
 z3 <- exp(jc69.rtlnP(rt$r, rt$t, x=humanorang$x, n=humanorang$n, shape.r, rate.r, shape.t, rate.t))
 z3 <- matrix(z3, ncol=n)
-image(t, r, z3, xlab="Root age (Ma)", ylab=expression(paste("Molecular rate (x ",10^-9, " s/s/My)")), main="Posterior", col=rev(heat.colors(12)), las=1)
+image(t, r, z3, xlab="Root age (Ma)", ylab="Molecular rate (s/s/My)", main="Posterior", col=rev(heat.colors(12)), las=1)
 contour(t, r, z3, add=TRUE, drawlabels=FALSE)
 curve(d.mle/x/1e-3, col="blue", lwd=2, add=TRUE)
 

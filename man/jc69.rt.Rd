@@ -34,33 +34,33 @@ The JC69 model on a pairwise sequence alignment on t and r
 data(humanorang)
 par(mfrow=c(1,3))
 n <- 100
-r <- seq(from=0, to=6, len=n)
+r <- seq(from=0, to=6, len=n) * 1e-3
 t <- seq(from=0, to=50, len=n)
 rt <- expand.grid(t=t, r=r)
-shape.r <- 2; rate.r <- .5      # diffuse prior with mean 4
-shape.t <- 16.2; rate.t <- .72  # informative prior with mean 22.5
+shape.r <- 2; rate.r <- .5 * 1e3  # diffuse prior with mean 4e-3 s/s/My
+shape.t <- 16.2; rate.t <- .72    # informative prior with mean 22.5 Ma
 # MLE of molecular distance, note d here is distance from tip to root
 d.mle <- jc69.2smle(humanorang$x, humanorang$n) / 2
 
 # Joint gamma prior on r and t:
 z1 <- dgamma(rt$t, shape.t, rate.t) * dgamma(rt$r, shape.r, rate.r)
 z1 <- matrix(z1, ncol=n)
-image(t, r, z1, xlab="Root age (Ma)", ylab=expression(paste("Molecular rate (x ",10^-9, " s/s/My)")), main="Prior", col=rev(heat.colors(12)), las=1)
+image(t, r, z1, xlab="Root age (Ma)", ylab="Molecular rate (s/s/My)", main="Prior", col=rev(heat.colors(12)), las=1)
 contour(t, r, z1, add=TRUE, drawlabels=FALSE)
 
 # Joint likelihood on r and t:
-z2 <- exp(jc69.rtlnL(rt$r * 1e-3, rt$t, x=humanorang$x, n=humanorang$n))
+z2 <- exp(jc69.rtlnL(rt$r, rt$t, x=humanorang$x, n=humanorang$n))
 z2 <- matrix(z2, ncol=n)
-image(t, r, z2, xlab="Root age (Ma)", ylab=expression(paste("Molecular rate (x ",10^-9, " s/s/My)")), main="Likelihood", col=rev(heat.colors(12)), las=1)
+image(t, r, z2, xlab="Root age (Ma)", ylab="Molecular rate (s/s/My)", main="Likelihood", col=rev(heat.colors(12)), las=1)
 contour(t, r, z2, add=TRUE, drawlabels=FALSE)
-curve(d.mle/x/1e-3, col="blue", lwd=2, add=TRUE)
+curve(d.mle/x, col="blue", lwd=2, add=TRUE)
 
 # Joint posterior on r and t:
-z3 <- exp(jc69.rtlnP(rt$r * 1e-3, rt$t, x=humanorang$x, n=humanorang$n, shape.r, rate.r, shape.t, rate.t))
+z3 <- exp(jc69.rtlnP(rt$r, rt$t, x=humanorang$x, n=humanorang$n, shape.r, rate.r, shape.t, rate.t))
 z3 <- matrix(z3, ncol=n)
-image(t, r, z3, xlab="Root age (Ma)", ylab=expression(paste("Molecular rate (x ",10^-9, " s/s/My)")), main="Posterior", col=rev(heat.colors(12)), las=1)
+image(t, r, z3, xlab="Root age (Ma)", ylab="Molecular rate (s/s/My)", main="Posterior", col=rev(heat.colors(12)), las=1)
 contour(t, r, z3, add=TRUE, drawlabels=FALSE)
-curve(d.mle/x/1e-3, col="blue", lwd=2, add=TRUE)
+curve(d.mle/x, col="blue", lwd=2, add=TRUE)
 
 }
 \references{
